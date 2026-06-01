@@ -36,6 +36,19 @@ async function migrate() {
     `);
     console.log('Created error_logs table.');
 
+    // Create password_resets table
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS password_resets (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        token VARCHAR(255) NOT NULL,
+        expires_at TIMESTAMP NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+      );
+    `);
+    console.log('Created password_resets table.');
+
     console.log('Migration successful.');
     process.exit(0);
   } catch (err) {

@@ -884,6 +884,41 @@ function initLoginPage() {
     });
   }
 
+  // Forgot Password Handler
+  const forgotPasswordLink = document.getElementById('link-forgot-password');
+  if (forgotPasswordLink) {
+    forgotPasswordLink.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const emailInput = document.getElementById('email');
+      const email = emailInput ? emailInput.value.trim() : '';
+      
+      if (!email) {
+        showToast('Please enter your email address first to reset password', 'error');
+        if (emailInput) emailInput.focus();
+        return;
+      }
+      
+      try {
+        const res = await fetch(`${API_BASE}/auth/forgot-password`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        const data = await res.json();
+        
+        if (!res.ok) {
+          showToast(data.message || 'Error sending password reset link', 'error');
+          return;
+        }
+        
+        showToast('Password reset link sent to your email', 'success');
+      } catch (err) {
+        console.error(err);
+        showToast('Error connecting to server', 'error');
+      }
+    });
+  }
+
   // Form Submit Handler
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
