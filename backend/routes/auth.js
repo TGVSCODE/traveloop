@@ -208,7 +208,9 @@ router.post('/forgot-password', async (req, res) => {
     const expires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
     await db.query('INSERT INTO password_resets (user_id, token, expires_at) VALUES (?, ?, ?)', [userId, token, expires]);
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
       auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_PASS
