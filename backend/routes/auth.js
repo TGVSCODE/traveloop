@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const db = require('../config/db');
 const auth = require('../middleware/auth');
 require('dotenv').config();
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
 
 // @route   POST api/auth/signup
 // @desc    Register user
@@ -190,6 +192,63 @@ router.get('/users', async (req, res) => {
   } catch (err) {
     console.error('Get all users error:', err);
     res.status(500).json({ message: 'Server error retrieving users' });
+  }
+});
+
+// @route   POST api/auth/forgot-password
+// @desc    Send password reset email
+router.post('/forgot-password', async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ message: 'Email is required' });
+  try {
+    const [users] = await db.query('SELECT id FROM users WHERE email = ?', [email]);
+    if (users.length === 0) return res.status(404).json({ message: 'User not found' });
+    const userId = users[0].id;
+    const token = crypto.randomBytes(32).toString('hex');
+    const expires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+    await db.query('INSERT INTO password_resets (user_id, token, expires_at) VALUES (?, ?, ?)', [userId, token, expires]);
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS
+      }
+    });
+    const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
+    const mailOptions = {
+      from: `"TravelLoop Support" <${process.env.GMAIL_USER}>`,
+      to: email,
+      subject: 'Password Reset Request',
+      html: `<p>You requested a password reset. Click <a href="${resetLink}">here</a> to reset your password. This link expires in 1 hour.</p>`
+    };
+    await transporter.sendMail(mailOptions);
+    res.json({ message: 'Password reset email sent' });
+  } catch (err) {
+    console.error('Forgot password error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// @route   POST api/auth/reset-password
+// @desc    Reset password using token
+router.post('/reset-password', async (req, res) => {
+  const { token, newPassword } = req.body;
+  if (!token || !newPassword) return res.status(400).json({ message: 'Token and new password required' });
+  try {
+    const [rows] = await db.query('SELECT user_id, expires_at FROM password_resets WHERE token = ?', [token]);
+    if (rows.length === 0) return res.status(400).json({ message: 'Invalid or expired token' });
+    const reset = rows[0];
+    if (new Date(reset.expires_at) < new Date()) {
+      return res.status(400).json({ message: 'Token has expired' });
+    }
+    const salt = await bcrypt.genSalt(10);
+    const hashed = await bcrypt.hash(newPassword, salt);
+    await db.query('UPDATE users SET password = ? WHERE id = ?', [hashed, reset.user_id]);
+    await db.query('DELETE FROM password_resets WHERE token = ?', [token]);
+    res.json({ message: 'Password has been reset' });
+  } catch (err) {
+    console.error('Reset password error:', err);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
