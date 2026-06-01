@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Traveloop</title>
+  <meta name="description" content="Traveloop home dashboard showing quick stats, budgets, and upcoming trips.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand">
+          <i class="fas fa-compass logo-icon"></i>
+          <span>Traveloop</span>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="sidebar-item active"><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+        <li class="sidebar-item"><a href="trips.html"><i class="fas fa-map-marked-alt"></i> My Trips</a></li>
+        <li class="sidebar-item"><a href="create-trip.html"><i class="fas fa-calendar-plus"></i> Plan New Trip</a></li>
+        <li class="sidebar-item"><a href="itinerary.html"><i class="fas fa-route"></i> Itinerary Builder</a></li>
+
+        <li class="sidebar-item"><a href="activities.html"><i class="fas fa-hiking"></i> Find Activities</a></li>
+        <li class="sidebar-item"><a href="weather.html"><i class="fas fa-cloud-sun"></i> Weather Advisory</a></li>
+        <li class="sidebar-item"><a href="budget.html"><i class="fas fa-wallet"></i> Budget Tracker</a></li>
+        <li class="sidebar-item"><a href="checklist.html"><i class="fas fa-tasks"></i> Packing List</a></li>
+        <li class="sidebar-item"><a href="notes.html"><i class="far fa-edit"></i> Travel Journal</a></li>
+        
+        <li class="sidebar-item"><a href="admin.html"><i class="fas fa-user-shield"></i> Admin Panel</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-snippet">
+          <!-- Populated by script.js -->
+        </div>
+        <button class="btn btn-secondary btn-logout" id="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <div class="page-title">
+          <h1 id="dashboard-greeting">Hello, Traveler!</h1>
+          <p>Here is your travel summary for today.</p>
+        </div>
+        <div style="display:flex; gap:0.5rem; align-items:center;">
+          <button class="sidebar-toggle-btn"><i class="fas fa-bars"></i></button>
+          <a href="create-trip.html" id="btn-dashboard-create" class="btn btn-primary" style="width: auto;"><i
+              class="fas fa-plus"></i> Plan New Trip</a>
+        </div>
+      </div>
+
+      <!-- Quick Stats Row -->
+      <section class="dashboard-grid" style="margin-bottom: 2rem;">
+        <div class="span-3 card stat-card">
+          <div class="stat-content">
+            <span class="stat-label">Total Trips</span>
+            <span id="stat-total-trips" class="stat-value">0</span>
+          </div>
+          <div class="stat-icon"><i class="fas fa-globe"></i></div>
+        </div>
+        <div class="span-3 card stat-card">
+          <div class="stat-content">
+            <span class="stat-label">Total Budgeted</span>
+            <span id="stat-total-budget" class="stat-value">$0</span>
+          </div>
+          <div class="stat-icon"><i class="fas fa-wallet"></i></div>
+        </div>
+        <div class="span-3 card stat-card">
+          <div class="stat-content">
+            <span class="stat-label">Total Expensed</span>
+            <span id="stat-total-spent" class="stat-value">$0</span>
+          </div>
+          <div class="stat-icon"><i class="fas fa-receipt"></i></div>
+        </div>
+        <div class="span-3 card stat-card">
+          <div class="stat-content">
+            <span class="stat-label">Checklist Items</span>
+            <span id="stat-checklist-progress" class="stat-value">0%</span>
+          </div>
+          <div class="stat-icon"><i class="fas fa-clipboard-check"></i></div>
+        </div>
+      </section>
+
+      <!-- Dashboard Sections -->
+      <div class="dashboard-grid">
+        <!-- Recent trips -->
+        <section class="span-8 card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+            <h3>Recent & Upcoming Trips</h3>
+            <a href="trips.html" id="link-view-all-trips" class="form-link" style="font-size:0.9rem;">View All <i
+                class="fas fa-arrow-right"></i></a>
+          </div>
+          <div id="recent-trips-list">
+            <!-- Populated by script.js (empty state if no trips) -->
+          </div>
+        </section>
+
+        <!-- Budget Highlights -->
+        <section class="span-4 card" style="display:flex; flex-direction:column; justify-content:space-between;">
+          <h3 style="margin-bottom:1rem;"><i class="fas fa-chart-pie"></i> Budget Highlights</h3>
+          <div id="budget-highlights" style="flex:1;">
+            <!-- Populated by script.js (empty state by default) -->
+          </div>
+        </section>
+
+        <!-- Recommended Destinations (API Ready) -->
+        <!--<section class="span-12 card" style="margin-top: 1rem;">
+          <h3 style="margin-bottom:1rem;"><i class="fas fa-map-signs"></i> Recommended Destinations</h3>
+          <div id="recommended-destinations">
+             Populated by script.js (empty state by default) 
+           </div>
+        </section>-->
+      </div>
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-nav">
+      <a href="dashboard.html" class="mobile-nav-item active"><i class="fas fa-chart-line"></i><span>Home</span></a>
+      <a href="trips.html" class="mobile-nav-item"><i class="fas fa-map-marked-alt"></i><span>Trips</span></a>
+      <a href="itinerary.html" class="mobile-nav-item"><i class="fas fa-route"></i><span>Itinerary</span></a>
+      <a href="budget.html" class="mobile-nav-item"><i class="fas fa-wallet"></i><span>Budget</span></a>
+      
+    </nav>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="script.js"></script>
+</body>
+
+</html>

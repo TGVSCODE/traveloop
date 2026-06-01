@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Activity Discovery - Traveloop</title>
+  <meta name="description" content="Discover points of interest, estimated costs, and adventure tickets.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand">
+          <i class="fas fa-compass logo-icon"></i>
+          <span>Traveloop</span>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="sidebar-item"><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+        <li class="sidebar-item"><a href="trips.html"><i class="fas fa-map-marked-alt"></i> My Trips</a></li>
+        <li class="sidebar-item"><a href="create-trip.html"><i class="fas fa-calendar-plus"></i> Plan New Trip</a></li>
+        <li class="sidebar-item"><a href="itinerary.html"><i class="fas fa-route"></i> Itinerary Builder</a></li>
+        <li class="sidebar-item active"><a href="activities.html"><i class="fas fa-hiking"></i> Find Activities</a></li>
+        <li class="sidebar-item"><a href="weather.html"><i class="fas fa-cloud-sun"></i> Weather Advisory</a></li>
+        <li class="sidebar-item"><a href="budget.html"><i class="fas fa-wallet"></i> Budget Tracker</a></li>
+        <li class="sidebar-item"><a href="checklist.html"><i class="fas fa-tasks"></i> Packing List</a></li>
+        <li class="sidebar-item"><a href="notes.html"><i class="far fa-edit"></i> Travel Journal</a></li>
+        
+        <li class="sidebar-item"><a href="admin.html"><i class="fas fa-user-shield"></i> Admin Panel</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-snippet">
+          <!-- Populated by script.js -->
+        </div>
+        <button class="btn btn-secondary btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <div class="page-title">
+          <h1>Smart Activity Discovery</h1>
+          <p>Discover local sightseeing, historical landmarks, food joints, and adventure tours across your trips.</p>
+        </div>
+        <div style="display:flex; gap:0.5rem; align-items:center;">
+          <button class="sidebar-toggle-btn"><i class="fas fa-bars"></i></button>
+        </div>
+      </div>
+
+      <!-- Categories & Filters -->
+      <section class="card" style="margin-bottom:1.5rem;">
+        <h3 style="margin-bottom:1rem;"><i class="fas fa-filter"></i> Category Filters</h3>
+        <div class="filter-container">
+          <button class="filter-chip active" data-category="All">All Categories</button>
+          <button class="filter-chip" data-category="Adventure"><i class="fas fa-mountain"></i> Adventure</button>
+          <button class="filter-chip" data-category="Historical"><i class="fas fa-landmark"></i> Historical</button>
+          <button class="filter-chip" data-category="Nature"><i class="fas fa-leaf"></i> Nature</button>
+          <button class="filter-chip" data-category="Food"><i class="fas fa-utensils"></i> Food</button>
+          <button class="filter-chip" data-category="Shopping"><i class="fas fa-shopping-bag"></i> Shopping</button>
+          <button class="filter-chip" data-category="Culture"><i class="fas fa-theater-masks"></i> Culture</button>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0; max-width: 400px;">
+          <div class="input-wrapper">
+            <i class="fas fa-search-location input-icon"></i>
+            <input type="text" id="activity-search" class="form-input" placeholder="Enter city name to discover activities...">
+          </div>
+        </div>
+      </section>
+
+      <!-- Discovery Catalog Grid -->
+      <div class="trips-grid" id="activity-list">
+        <!-- Initially empty state container (will be populated dynamically upon interaction with loading states) -->
+        <div class="span-12">
+          <div class="empty-state">
+            <i class="fas fa-hiking empty-icon"></i>
+            <h4 class="empty-title">Places Discovery Catalog is Empty</h4>
+            <p class="empty-description">Select any category chip or use the search bar above to fetch points of
+              interest. This interface is structured to request from <strong>Foursquare Places API</strong>.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Add Activity To Itinerary Modal -->
+    <div class="modal" id="add-activity-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Add Activity to Itinerary</h3>
+          <button class="modal-close"><i class="fas fa-times"></i></button>
+        </div>
+        <form id="add-activity-form">
+          <div class="modal-body" style="display:flex; flex-direction:column; gap:1rem;">
+            <p>Confirm the details below to write this activity card into your trip planning timelines:</p>
+            <div class="form-group">
+              <label for="select-trip-activity" class="form-label">Plan Trip</label>
+              <select id="select-trip-activity" class="form-input" style="padding-left:1rem;"></select>
+            </div>
+            <div class="form-group">
+              <label for="activity-date" class="form-label">Activity Date</label>
+              <input type="date" id="activity-date" class="form-input" style="padding-left:1rem;" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary modal-cancel" style="width:auto;">Cancel</button>
+            <button type="submit" id="btn-add-activity-save" class="btn btn-primary" style="width:auto;">Add
+              Itinerary</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-nav">
+      <a href="dashboard.html" class="mobile-nav-item"><i class="fas fa-chart-line"></i><span>Home</span></a>
+      <a href="trips.html" class="mobile-nav-item"><i class="fas fa-map-marked-alt"></i><span>Trips</span></a>
+      <a href="itinerary.html" class="mobile-nav-item"><i class="fas fa-route"></i><span>Itinerary</span></a>
+      <a href="budget.html" class="mobile-nav-item"><i class="fas fa-wallet"></i><span>Budget</span></a>
+      
+    </nav>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="script.js"></script>
+</body>
+
+</html>

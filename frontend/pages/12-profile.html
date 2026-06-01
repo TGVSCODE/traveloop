@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Settings - Traveloop</title>
+  <meta name="description" content="Manage your Traveloop account settings, security options, notification preferences, and saved locations.">
+  
+  <!-- Fonts & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/profile.css">
+</head>
+<body class="profile-body">
+
+  <!-- NAVBAR (shared, from navbar component) -->
+  <header class="profile-navbar" style="background-color: var(--bg-card); border-bottom: 1px solid var(--border); padding: 0.75rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 105; box-shadow: var(--shadow-card);">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <button class="profile-menu-toggle" id="profile-sidebar-toggle-btn">
+        <i class="fas fa-bars"></i>
+      </button>
+      <a href="../dashboard.html" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--text-primary); font-family: var(--font-heading); font-size: 1.25rem; font-weight: 700;">
+        <i class="fas fa-compass" style="color: var(--accent); font-size: 1.4rem;"></i>
+        <span>Traveloop</span>
+      </a>
+    </div>
+    
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <button id="dark-mode-toggle" class="profile-btn profile-btn-secondary" style="padding: 0.4rem 1rem; border-radius: var(--radius-xs);"><i class="fas fa-moon"></i></button>
+      <a href="../dashboard.html" class="profile-btn profile-btn-secondary" style="padding: 0.4rem 1rem; border-radius: var(--radius-xs);"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+    </div>
+  </header>
+
+  <div class="profile-app-container">
+  
+    <!-- SIDEBAR OVERLAY FOR MOBILE -->
+    <div class="profile-sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="profile-sidebar" id="profile-sidebar">
+      
+      <!-- User Card Section -->
+      <div class="profile-user-card">
+        <div class="profile-avatar-wrapper">
+          <div class="profile-avatar" id="sidebar-avatar-container">
+            <!-- Populated by JavaScript initials or base64 photo -->
+            U
+          </div>
+          <label for="avatar-file-input" class="profile-avatar-upload-btn">
+            <i class="fas fa-camera"></i>
+          </label>
+          <input type="file" id="avatar-file-input" accept="image/*" style="display: none;">
+        </div>
+        
+        <h3 class="profile-user-name" id="sidebar-user-name">Traveler</h3>
+        <p class="profile-user-email" id="sidebar-user-email">traveler@traveloop.com</p>
+        <span class="pro-badge">Pro Member</span>
+        
+        <!-- Stats Row -->
+        <div class="sidebar-stats-row">
+          <div class="sidebar-stat-col">
+            <span class="sidebar-stat-val" id="sidebar-stat-trips">0</span>
+            <span class="sidebar-stat-lbl">Trips</span>
+          </div>
+          <div class="sidebar-stat-col">
+            <span class="sidebar-stat-val" id="sidebar-stat-countries">0</span>
+            <span class="sidebar-stat-lbl">Countries</span>
+          </div>
+          <div class="sidebar-stat-col">
+            <span class="sidebar-stat-val" id="sidebar-stat-cities">0</span>
+            <span class="sidebar-stat-lbl">Cities</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation groups -->
+      <nav class="profile-sidebar-nav">
+        
+        <div class="sidebar-nav-group-title">Account</div>
+        <div class="sidebar-nav-item active" onclick="switchSection('profile-info-section')">
+          <i class="fas fa-user"></i> Profile Info
+        </div>
+        <div class="sidebar-nav-group-title">Security</div>
+        <div class="sidebar-nav-item" onclick="switchSection('password-section')">
+          <i class="fas fa-lock"></i> Password
+        </div>
+        <div class="sidebar-nav-item danger-item" onclick="switchSection('danger-zone-section')">
+          <i class="fas fa-trash"></i> Delete Account
+        </div>
+      </nav>
+    </aside>
+
+    <!-- RIGHT CONTENT AREA -->
+    <main class="profile-main-content">
+      
+      <!-- Content Header Banner -->
+      <div class="profile-content-header">
+        <div>
+          <h1>Account Settings</h1>
+          <p>Update your personal information, adjust security parameters, and manage saved data.</p>
+        </div>
+      </div>
+
+      <!-- SECTION 1: PROFILE INFO -->
+      <section class="profile-section" id="profile-info-section">
+        <div class="profile-section-header">
+          <h2 class="profile-section-title"><i class="fas fa-user" style="color: var(--accent);"></i> Profile Information</h2>
+          <p class="profile-section-subtitle">Configure your public profile and contact details.</p>
+        </div>
+        <hr class="profile-section-divider">
+        
+        <!-- Travel Stats Strip -->
+        <div class="stats-strip-container">
+          <div class="stat-strip-card">
+            <span class="stat-strip-number" id="stats-trips-count">0</span>
+            <span class="stat-strip-label">Trips planned</span>
+          </div>
+          <div class="stat-strip-card">
+            <span class="stat-strip-number" id="stats-countries-count">0</span>
+            <span class="stat-strip-label">Countries visited</span>
+          </div>
+          <div class="stat-strip-card">
+            <span class="stat-strip-number" id="stats-cities-count">0</span>
+            <span class="stat-strip-label">Cities visited</span>
+          </div>
+        </div>
+
+        <!-- Form fields -->
+        <form id="profile-info-form" onsubmit="event.preventDefault();" novalidate>
+          <div class="profile-grid-2">
+            <div class="form-group-custom">
+              <label for="info-fullname" class="form-label-custom">Full Name *</label>
+              <div class="input-container-custom" id="fullname-container">
+                <input type="text" id="info-fullname" placeholder="Enter your full name" required>
+              </div>
+            </div>
+            
+            <div class="form-group-custom">
+              <label for="info-username" class="form-label-custom">Username *</label>
+              <div class="input-container-custom" id="username-container">
+                <span class="username-prefix">@</span>
+                <input type="text" id="info-username" class="input-with-prefix" placeholder="username" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-grid-full">
+            <div class="form-group-custom">
+              <label for="info-email" class="form-label-custom">Email Address</label>
+              <div class="input-container-custom">
+                <input type="email" id="info-email" readonly>
+              </div>
+              <div class="input-info-text">
+                <i class="fas fa-info-circle"></i> Email cannot be changed. Contact support.
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-grid-full">
+            <div class="form-group-custom">
+              <label for="info-bio" class="form-label-custom">Bio</label>
+              <div class="input-container-custom">
+                <textarea id="info-bio" rows="4" placeholder="Tell us about yourself..."></textarea>
+              </div>
+              <div class="char-counter" id="bio-char-counter">0 / 160</div>
+            </div>
+          </div>
+
+          <div class="profile-grid-full">
+            <div class="form-group-custom">
+              <label for="info-homecity" class="form-label-custom">Home City</label>
+              <div class="input-container-custom" id="homecity-container">
+                <input type="text" id="info-homecity" placeholder="e.g. San Francisco">
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-btn-row">
+            <!--
+              BUTTON: Save profile
+              PURPOSE: Validates form, calls PUT /api/profile,
+                       updates state.user, shows success toast
+              TRIGGERS: handleSaveProfile()
+              API CALL: PUT /api/profile
+              NAVIGATES TO: stays on page
+            -->
+            <button type="button" class="profile-btn profile-btn-primary" onclick="handleSaveProfile()">
+              <i class="fas fa-save"></i> Save changes
+            </button>
+            
+            <!--
+              BUTTON: Cancel profile edit
+              PURPOSE: Resets all form fields to original values
+                       loaded from state.user on page init
+              TRIGGERS: handleCancelProfile()
+              API CALL: none
+              NAVIGATES TO: stays on page
+            -->
+            <button type="button" class="profile-btn profile-btn-secondary" onclick="handleCancelProfile()">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <hr class="profile-section-divider">
+
+      <!-- SECTION 4: PASSWORD -->
+      <section class="profile-section" id="password-section">
+        <div class="profile-section-header">
+          <h2 class="profile-section-title"><i class="fas fa-lock" style="color: var(--accent);"></i> Security & Password</h2>
+          <p class="profile-section-subtitle">Update your password to keep your account safe.</p>
+        </div>
+        <hr class="profile-section-divider">
+
+        <form id="password-form" onsubmit="event.preventDefault();" novalidate>
+          <div class="profile-grid-full">
+            <div class="form-group-custom">
+              <label for="pwd-current" class="form-label-custom">Current Password</label>
+              <div class="input-container-custom" id="current-pwd-container">
+                <input type="password" id="pwd-current" placeholder="••••••••" required>
+                <button type="button" class="password-toggle" id="toggle-pwd-current" style="border:none; background:none; position:absolute; right:1rem; cursor:pointer; color:var(--text-secondary);">
+                  <i class="far fa-eye"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-grid-full">
+            <div class="form-group-custom">
+              <label for="pwd-new" class="form-label-custom">New Password</label>
+              <div class="input-container-custom" id="new-pwd-container">
+                <input type="password" id="pwd-new" placeholder="••••••••" required>
+                <button type="button" class="password-toggle" id="toggle-pwd-new" style="border:none; background:none; position:absolute; right:1rem; cursor:pointer; color:var(--text-secondary);">
+                  <i class="far fa-eye"></i>
+                </button>
+              </div>
+              
+              <!-- Password Strength Bar -->
+              <div class="password-strength-container">
+                <div class="password-strength-bars" id="strength-bars">
+                  <div class="strength-bar"></div>
+                  <div class="strength-bar"></div>
+                  <div class="strength-bar"></div>
+                  <div class="strength-bar"></div>
+                </div>
+                <div class="password-strength-label">Password strength: <span id="strength-text">Weak</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-grid-full">
+            <div class="form-group-custom">
+              <label for="pwd-confirm" class="form-label-custom">Confirm New Password</label>
+              <div class="input-container-custom" id="confirm-pwd-container">
+                <input type="password" id="pwd-confirm" placeholder="••••••••" required>
+                <button type="button" class="password-toggle" id="toggle-pwd-confirm" style="border:none; background:none; position:absolute; right:1rem; cursor:pointer; color:var(--text-secondary);">
+                  <i class="far fa-eye"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Password Rules Hint Box -->
+          <div class="password-rules-box">
+            <ul class="password-rules-list">
+              <li class="password-rule-item" id="rule-min-char"><i class="fas fa-times-circle"></i> Minimum 8 characters</li>
+              <li class="password-rule-item" id="rule-uppercase"><i class="fas fa-times-circle"></i> At least 1 uppercase letter</li>
+              <li class="password-rule-item" id="rule-number"><i class="fas fa-times-circle"></i> At least 1 number</li>
+              <li class="password-rule-item" id="rule-special"><i class="fas fa-times-circle"></i> At least 1 special character</li>
+            </ul>
+          </div>
+
+          <div class="profile-btn-row">
+            <!--
+              BUTTON: Change password
+              PURPOSE: Validates current + new password,
+                       checks rules, calls PUT /api/auth/password,
+                       on success clears fields + shows toast
+              TRIGGERS: handleChangePassword()
+              API CALL: PUT /api/auth/password
+              NAVIGATES TO: stays on page
+            -->
+            <button type="button" class="profile-btn profile-btn-primary" onclick="handleChangePassword()">
+              Update password
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <hr class="profile-section-divider">
+
+      <!-- DANGER ZONE -->
+      <section class="profile-section" id="danger-zone-section">
+        <div class="danger-zone-box">
+          <h2 class="danger-zone-title"><i class="fas fa-triangle-exclamation"></i> Danger zone</h2>
+          <p class="danger-zone-text">
+            Deleting your account is permanent and cannot be undone. All your trips, notes, itineraries, and personal data will be permanently removed.
+          </p>
+          <!--
+            BUTTON: Delete account
+            PURPOSE: Opens delete confirmation modal requiring
+                     user to type their email address to confirm,
+                     then calls DELETE /api/account,
+                     clears all localStorage, redirects to login
+            TRIGGERS: handleDeleteAccount()
+            API CALL: DELETE /api/account
+            NAVIGATES TO: opens confirm modal → #/login on confirm
+          -->
+          <button type="button" class="profile-btn profile-btn-danger" onclick="handleDeleteAccount()">
+            <i class="fas fa-trash"></i> Delete my account
+          </button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- MODALS -->
+  <!-- Modal 1 — Delete Account Confirmation -->
+  <div class="profile-modal-overlay" id="delete-account-modal">
+    <div class="profile-modal-card">
+      <h3 class="profile-modal-title">Are you absolutely sure?</h3>
+      <p class="profile-modal-desc danger-desc">
+        <i class="fas fa-circle-exclamation"></i> This action is irreversible. All of your travel plans and journal entries will be deleted forever.
+      </p>
+      <div class="form-group-custom" style="margin-bottom: 1.5rem;">
+        <label for="confirm-email-input" class="form-label-custom" id="confirm-email-label">Please type your email to confirm</label>
+        <div class="input-container-custom">
+          <input type="email" id="confirm-email-input" placeholder="you@example.com">
+        </div>
+      </div>
+      <div class="profile-btn-row">
+        <!--
+          BUTTON: Confirm Account Deletion
+          PURPOSE: Invokes actual backend account deletion process,
+                   clears local storage, and logs out the user.
+          TRIGGERS: submitDeleteAccount()
+          API CALL: DELETE /api/account
+        -->
+        <button type="button" class="profile-btn profile-btn-danger" id="modal-confirm-delete-btn" disabled onclick="submitDeleteAccount()">
+          Delete Account
+        </button>
+        <!--
+          BUTTON: Cancel Deletion Modal
+          PURPOSE: Closes the confirmation overlay.
+          TRIGGERS: closeDeleteAccountModal()
+        -->
+        <button type="button" class="profile-btn profile-btn-secondary" onclick="closeDeleteAccountModal()">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Javascript File -->
+  <script src="../js/profile.js" defer></script>
+</body>
+</html>

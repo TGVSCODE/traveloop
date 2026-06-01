@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Itinerary Builder - Traveloop</title>
+  <meta name="description" content="Map out activities, stops, and durations on Traveloop.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand">
+          <i class="fas fa-compass logo-icon"></i>
+          <span>Traveloop</span>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="sidebar-item"><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+        <li class="sidebar-item"><a href="trips.html"><i class="fas fa-map-marked-alt"></i> My Trips</a></li>
+        <li class="sidebar-item"><a href="create-trip.html"><i class="fas fa-calendar-plus"></i> Plan New Trip</a></li>
+        <li class="sidebar-item active"><a href="itinerary.html"><i class="fas fa-route"></i> Itinerary Builder</a></li>
+        <li class="sidebar-item"><a href="activities.html"><i class="fas fa-hiking"></i> Find Activities</a></li>
+        <li class="sidebar-item"><a href="weather.html"><i class="fas fa-cloud-sun"></i> Weather Advisory</a></li>
+        <li class="sidebar-item"><a href="budget.html"><i class="fas fa-wallet"></i> Budget Tracker</a></li>
+        <li class="sidebar-item"><a href="checklist.html"><i class="fas fa-tasks"></i> Packing List</a></li>
+        <li class="sidebar-item"><a href="notes.html"><i class="far fa-edit"></i> Travel Journal</a></li>
+        
+        <li class="sidebar-item"><a href="admin.html"><i class="fas fa-user-shield"></i> Admin Panel</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-snippet">
+          <!-- Populated by script.js -->
+        </div>
+        <button class="btn btn-secondary btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <div class="page-title">
+          <h1 id="itinerary-trip-title">Itinerary Builder</h1>
+          <p id="itinerary-trip-destination">Select a trip to begin scheduling stops.</p>
+        </div>
+        <div style="display:flex; gap:0.5rem; align-items:center;">
+          <button class="sidebar-toggle-btn"><i class="fas fa-bars"></i></button>
+          <button class="btn btn-secondary" id="share-itinerary-shortcut" style="width: auto;"><i
+              class="fas fa-share-nodes"></i> Share Plan</button>
+        </div>
+      </div>
+
+      <section id="itinerary-builder-section" class="dashboard-grid">
+        <!-- Itinerary Stop Adder Form -->
+        <div class="span-4 card" style="height: fit-content;">
+          <h3 style="margin-bottom:1.5rem;"><i class="fas fa-calendar-plus"></i> Add Itinerary Item</h3>
+          <form id="add-stop-form" novalidate>
+            <div class="form-group">
+              <label for="stop-city" class="form-label">City *</label>
+              <div class="input-wrapper">
+                <i class="fas fa-city input-icon"></i>
+                <input type="text" id="stop-city" class="form-input" placeholder="e.g. Ubud" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="stop-date" class="form-label">Stop Date *</label>
+              <div class="input-wrapper">
+                <i class="fas fa-calendar input-icon"></i>
+                <input type="date" id="stop-date" class="form-input" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="stop-activity" class="form-label">Activity Name *</label>
+              <div class="input-wrapper">
+                <i class="fas fa-hiking input-icon"></i>
+                <input type="text" id="stop-activity" class="form-input" placeholder="e.g. Monkey Forest Tour" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="stop-category" class="form-label">Category</label>
+              <div class="input-wrapper">
+                <i class="fas fa-tags input-icon"></i>
+                <select id="stop-category" class="form-input" style="padding-left: 2.75rem;">
+                  <option value="Adventure">Adventure</option>
+                  <option value="Historical">Historical</option>
+                  <option value="Nature">Nature</option>
+                  <option value="Food">Food</option>
+                  <option value="Shopping">Shopping</option>
+                  <option value="Culture">Culture</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display:flex; gap:0.5rem;">
+              <div class="form-group" style="flex:1;">
+                <label for="stop-cost" class="form-label">Est. Cost ($)</label>
+                <input type="number" id="stop-cost" class="form-input" style="padding-left:0.5rem; padding-right:0.5rem;" placeholder="Cost"
+                  min="0">
+              </div>
+              <div class="form-group" style="flex:1;">
+                <label for="stop-duration" class="form-label">Duration (h)</label>
+                <input type="number" id="stop-duration" class="form-input" style="padding-left:0.5rem; padding-right:0.5rem;"
+                  placeholder="Hrs" min="0">
+              </div>
+              <div class="form-group" style="flex:1;">
+                <label for="stop-start-time" class="form-label">Start Time</label>
+                <input type="time" id="stop-start-time" class="form-input" style="padding: 0.5rem 0.25rem 0.5rem 0.25rem; font-size: 0.8rem;">
+              </div>
+            </div>
+
+            <button type="submit" id="btn-add-stop-submit" class="btn btn-primary" style="margin-top:0.5rem;"><i
+                class="fas fa-plus"></i> Add to Timeline</button>
+          </form>
+        </div>
+
+        <!-- Vertical Timeline View -->
+        <div class="span-8 card">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem;">
+            <h3 style="margin:0;"><i class="fas fa-route"></i> Travel Timeline</h3>
+            <div id="timeline-stats-bar" class="timeline-stats-bar">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+          
+          <div id="day-tabs-container" class="day-tabs-container">
+            <!-- Rendered dynamically -->
+          </div>
+          
+          <div class="timeline" id="timeline-container">
+            <!-- Rendered by script.js -->
+          </div>
+        </div>
+
+
+      </section>
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-nav">
+      <a href="dashboard.html" class="mobile-nav-item"><i class="fas fa-chart-line"></i><span>Home</span></a>
+      <a href="trips.html" class="mobile-nav-item"><i class="fas fa-map-marked-alt"></i><span>Trips</span></a>
+      <a href="itinerary.html" class="mobile-nav-item active"><i class="fas fa-route"></i><span>Itinerary</span></a>
+      <a href="budget.html" class="mobile-nav-item"><i class="fas fa-wallet"></i><span>Budget</span></a>
+      
+    </nav>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="script.js"></script>
+</body>
+
+</html>

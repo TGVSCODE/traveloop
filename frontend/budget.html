@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Budget & Expenses - Traveloop</title>
+  <meta name="description" content="Log expenses, check budget overruns, and view category splits.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand">
+          <i class="fas fa-compass logo-icon"></i>
+          <span>Traveloop</span>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="sidebar-item"><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+        <li class="sidebar-item"><a href="trips.html"><i class="fas fa-map-marked-alt"></i> My Trips</a></li>
+        <li class="sidebar-item"><a href="create-trip.html"><i class="fas fa-calendar-plus"></i> Plan New Trip</a></li>
+        <li class="sidebar-item"><a href="itinerary.html"><i class="fas fa-route"></i> Itinerary Builder</a></li>
+        <li class="sidebar-item"><a href="activities.html"><i class="fas fa-hiking"></i> Find Activities</a></li>
+        <li class="sidebar-item"><a href="weather.html"><i class="fas fa-cloud-sun"></i> Weather Advisory</a></li>
+        <li class="sidebar-item active"><a href="budget.html"><i class="fas fa-wallet"></i> Budget Tracker</a></li>
+        <li class="sidebar-item"><a href="checklist.html"><i class="fas fa-tasks"></i> Packing List</a></li>
+        <li class="sidebar-item"><a href="notes.html"><i class="far fa-edit"></i> Travel Journal</a></li>
+        
+        <li class="sidebar-item"><a href="admin.html"><i class="fas fa-user-shield"></i> Admin Panel</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-snippet">
+          <!-- Populated by script.js -->
+        </div>
+        <button class="btn btn-secondary btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <div class="page-title">
+          <h1 id="budget-trip-title">Budget Tracker</h1>
+          <p>Keep tab on travel expenditure, food, flights, and category logs.</p>
+        </div>
+        <div style="display:flex; gap:0.5rem; align-items:center;">
+          <button class="sidebar-toggle-btn"><i class="fas fa-bars"></i></button>
+        </div>
+      </div>
+
+      <!-- Warning/Overrun alert banners dynamic placement -->
+      <div id="budget-alert-box" class="weather-alerts" style="display:none; margin-bottom: 1.5rem;"></div>
+
+      <!-- Pending Payments Section -->
+      <section id="pending-payments-section" class="dashboard-grid" style="margin-top:2rem; display:none;">
+        <div class="span-12 card">
+          <h3><i class="fas fa-wallet"></i> Pending Payments</h3>
+          <div id="pending-payments" class="cards-grid"></div>
+        </div>
+      </section>
+
+      <section id="budget-tracker-section" class="dashboard-grid">
+        <!-- Overview summary & SVG Pie Chart -->
+        <div class="span-8 card">
+          <h3><i class="fas fa-chart-simple"></i> Expenditure Overview</h3>
+          <div class="budget-summary-box" style="margin-top: 1.5rem;">
+            <div style="display:flex; flex-direction:column; gap:1.25rem; flex:1; min-width: 200px;">
+              <div
+                style="background:rgba(255,255,255,0.02); padding:0.85rem 1.25rem; border-radius:10px; border:1px solid var(--glass-border); display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:0.9rem; color:var(--text-secondary);">Limit</span>
+                <span id="budget-limit-val"
+                  style="font-family:var(--font-mono); font-weight:700; font-size:1.1rem;">$0</span>
+              </div>
+              <div
+                style="background:rgba(255,255,255,0.02); padding:0.85rem 1.25rem; border-radius:10px; border:1px solid var(--glass-border); display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:0.9rem; color:var(--text-secondary);">Total Expensed</span>
+                <span id="budget-spent-val"
+                  style="font-family:var(--font-mono); font-weight:700; font-size:1.1rem;">$0</span>
+              </div>
+              <div
+                style="background:rgba(255,255,255,0.02); padding:0.85rem 1.25rem; border-radius:10px; border:1px solid var(--glass-border); display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:0.9rem; color:var(--text-secondary);">Remaining</span>
+                <span id="budget-remaining-val"
+                  style="font-family:var(--font-mono); font-weight:700; font-size:1.1rem;">$0</span>
+              </div>
+            </div>
+
+            <!-- Custom Pie SVG Chart -->
+            <div class="pie-chart-container">
+              <svg class="pie-chart-svg" viewBox="0 0 64 64">
+                <circle r="24" cx="32" cy="32"
+                  style="fill: transparent; stroke: rgba(255,255,255,0.05); stroke-width: 8;" />
+                <circle id="pie-chart-stroke" r="24" cx="32" cy="32"
+                  style="fill: transparent; stroke: var(--success); stroke-width: 8; stroke-dasharray: 150.79; stroke-dashoffset: 150.79; transition: stroke-dashoffset 0.5s ease-in-out;" />
+              </svg>
+              <div class="chart-center-text">
+                <div class="chart-center-val" id="pie-chart-pct">0%</div>
+                <div class="chart-center-lbl">Utilized</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Expense list breakdown -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2rem; margin-bottom:1rem; flex-wrap:wrap; gap:1rem;">
+            <h3 style="margin-top: 0;"><i class="fas fa-list-ul"></i> Expense Logs</h3>
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+              <div class="input-wrapper" style="width:180px;">
+                <i class="fas fa-search input-icon" style="left:0.75rem; font-size:0.85rem;"></i>
+                <input type="text" id="expense-search" class="form-input" placeholder="Search..." style="padding: 0.4rem 0.75rem 0.4rem 2.2rem; font-size:0.85rem; border-radius:8px;">
+              </div>
+              <div class="input-wrapper" style="width:140px;">
+                <i class="fas fa-filter input-icon" style="left:0.75rem; font-size:0.85rem;"></i>
+                <select id="expense-filter-category" class="form-input" style="padding: 0.4rem 0.75rem 0.4rem 2.2rem; font-size:0.85rem; border-radius:8px;">
+                  <option value="All">All Categories</option>
+                  <option value="Flights">Flights</option>
+                  <option value="Lodging">Lodging</option>
+                  <option value="Food">Food</option>
+                  <option value="Transport">Transport</option>
+                  <option value="Activities">Activities</option>
+                  <option value="Shopping">Shopping</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="expense-table-container">
+            <table class="expense-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th>Category</th>
+                  <th>Amount</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="expense-table-body">
+                <!-- Rendered by script.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Add expense item form -->
+        <div class="span-4 card" style="height:fit-content;">
+          <h3 style="margin-bottom:0.5rem;"><i class="fas fa-receipt"></i> Log Expense</h3>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.4;">Use this form to track external bookings (like Expedia flights or Airbnb stays) against your total trip budget.</p>
+          <form id="add-expense-form" novalidate>
+            <div class="form-group">
+              <label for="expense-desc" class="form-label">Description *</label>
+              <div class="input-wrapper">
+                <i class="fas fa-tag input-icon"></i>
+                <input type="text" id="expense-desc" class="form-input" placeholder="e.g. Flight ticket booking"
+                  required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="expense-amount" class="form-label">Amount ($) *</label>
+              <div class="input-wrapper">
+                <i class="fas fa-dollar-sign input-icon"></i>
+                <input type="number" id="expense-amount" class="form-input" placeholder="0" min="0.01" step="0.01"
+                  required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="expense-category" class="form-label">Category</label>
+              <div class="input-wrapper">
+                <i class="fas fa-folder-open input-icon"></i>
+                <select id="expense-category" class="form-input" style="padding-left:2.75rem;">
+                  <option value="Flights">Flights</option>
+                  <option value="Lodging">Lodging</option>
+                  <option value="Food">Food & Dinings</option>
+                  <option value="Transport">Transport</option>
+                  <option value="Activities">Activities</option>
+                  <option value="Shopping">Shopping</option>
+                  <option value="Other">Other Expenses</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="expense-date" class="form-label">Expense Date *</label>
+              <div class="input-wrapper">
+                <i class="fas fa-calendar-day input-icon"></i>
+                <input type="date" id="expense-date" class="form-input" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="expense-status" class="form-label">Payment Status</label>
+              <div class="input-wrapper">
+                <i class="fas fa-credit-card input-icon"></i>
+                <select id="expense-status" class="form-input" style="padding-left:2.75rem;">
+                  <option value="Paid">Paid</option>
+                  <option value="Pending">Pending</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" id="btn-add-expense" class="btn btn-primary" style="margin-top:0.5rem;"><i
+                class="fas fa-plus"></i> Add Item</button>
+          </form>
+          <button id="view-invoice-btn" class="btn btn-primary" style="margin-top:1rem;">
+            <i class="fas fa-file-invoice"></i> View Invoice
+          </button>
+        </div>
+      </section>
+      <!-- Invoice Modal -->
+      <div id="invoice-modal" class="modal">
+        <div class="modal-content" style="max-width:700px; width:95%; max-height:90vh; display:flex; flex-direction:column;">
+          <div class="modal-header">
+            <h3>Expense Invoice</h3>
+            <button class="modal-close" id="invoice-close-btn"><i class="fas fa-times"></i></button>
+          </div>
+          <div class="modal-body" id="invoice-body" style="overflow-y:auto; flex:1;">
+            <!-- Invoice content populated via JS -->
+          </div>
+          <div class="modal-footer" style="flex-shrink:0;">
+            <button class="btn btn-primary" id="download-invoice-btn"><i class="fas fa-download"></i> Download
+              PDF</button>
+            <button class="btn btn-secondary" id="print-invoice-btn"><i class="fas fa-print"></i> Print Invoice</button>
+            <button class="btn btn-secondary" id="close-invoice-btn"><i class="fas fa-times"></i> Close</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-nav">
+      <a href="dashboard.html" class="mobile-nav-item"><i class="fas fa-chart-line"></i><span>Home</span></a>
+      <a href="trips.html" class="mobile-nav-item"><i class="fas fa-map-marked-alt"></i><span>Trips</span></a>
+      <a href="itinerary.html" class="mobile-nav-item"><i class="fas fa-route"></i><span>Itinerary</span></a>
+      <a href="budget.html" class="mobile-nav-item active"><i class="fas fa-wallet"></i><span>Budget</span></a>
+      
+    </nav>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

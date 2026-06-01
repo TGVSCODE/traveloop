@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Packing Checklist - Traveloop</title>
+  <meta name="description"
+    content="Organize clothing, toiletries, and flight documents, checking off items as you pack.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand">
+          <i class="fas fa-compass logo-icon"></i>
+          <span>Traveloop</span>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="sidebar-item"><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+        <li class="sidebar-item"><a href="trips.html"><i class="fas fa-map-marked-alt"></i> My Trips</a></li>
+        <li class="sidebar-item"><a href="create-trip.html"><i class="fas fa-calendar-plus"></i> Plan New Trip</a></li>
+        <li class="sidebar-item"><a href="itinerary.html"><i class="fas fa-route"></i> Itinerary Builder</a></li>
+        <li class="sidebar-item"><a href="activities.html"><i class="fas fa-hiking"></i> Find Activities</a></li>
+        <li class="sidebar-item"><a href="weather.html"><i class="fas fa-cloud-sun"></i> Weather Advisory</a></li>
+        <li class="sidebar-item"><a href="budget.html"><i class="fas fa-wallet"></i> Budget Tracker</a></li>
+        <li class="sidebar-item active"><a href="checklist.html"><i class="fas fa-tasks"></i> Packing List</a></li>
+        <li class="sidebar-item"><a href="notes.html"><i class="far fa-edit"></i> Travel Journal</a></li>
+        
+        <li class="sidebar-item"><a href="admin.html"><i class="fas fa-user-shield"></i> Admin Panel</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-snippet">
+          <!-- Populated by script.js -->
+        </div>
+        <button class="btn btn-secondary btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <div class="page-title">
+          <h1 id="checklist-trip-title">Packing Checklist</h1>
+          <p>Prepare clothing, electronic chargers, booking vouchers, and check off items as they go into the suitcase.
+          </p>
+        </div>
+        <div style="display:flex; gap:0.5rem; align-items:center;">
+          <button class="sidebar-toggle-btn"><i class="fas fa-bars"></i></button>
+        </div>
+      </div>
+
+      <section id="checklist-builder-section" class="dashboard-grid">
+        <!-- Progress Bar and Items Lists -->
+        <div class="span-8 card">
+          <div class="checklist-progress-container">
+            <div class="progress-header">
+              <span id="checklist-count-lbl">0 of 0 items packed</span>
+              <span id="checklist-pct-lbl" style="font-weight:700;">0%</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="checklist-progress-bar-fill"></div>
+            </div>
+          </div>
+
+          <h3><i class="fas fa-suitcase-rolling"></i> Suitcase Checklist</h3>
+          <div class="checklist-items" id="checklist-items-list" style="margin-top:1.5rem;">
+            <!-- Rendered dynamically by script.js -->
+          </div>
+        </div>
+
+        <!-- Add checklist item form -->
+        <div class="span-4 card" style="height:fit-content;">
+          <h3 style="margin-bottom:1.5rem;"><i class="fas fa-plus"></i> Add Item</h3>
+          <form id="add-checklist-form" novalidate>
+            <div class="form-group">
+              <label for="checklist-item-name" class="form-label">Item Name *</label>
+              <div class="input-wrapper">
+                <i class="fas fa-luggage-cart input-icon"></i>
+                <input type="text" id="checklist-item-name" class="form-input" placeholder="e.g. Passport booklet"
+                  required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="checklist-item-category" class="form-label">Category</label>
+              <div class="input-wrapper">
+                <i class="fas fa-bookmark input-icon"></i>
+                <select id="checklist-item-category" class="form-input" style="padding-left:2.75rem;">
+                  <option value="Documents">Documents & IDs</option>
+                  <option value="Clothing">Clothing</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="Toiletries">Toiletries</option>
+                  <option value="Medication">Medication</option>
+                  <option value="Other">Other Accessories</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" id="btn-add-checklist" class="btn btn-primary" style="margin-top:0.5rem;"><i
+                class="fas fa-plus"></i> Add to Suitcase</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-nav">
+      <a href="dashboard.html" class="mobile-nav-item"><i class="fas fa-chart-line"></i><span>Home</span></a>
+      <a href="trips.html" class="mobile-nav-item"><i class="fas fa-map-marked-alt"></i><span>Trips</span></a>
+      <a href="itinerary.html" class="mobile-nav-item"><i class="fas fa-route"></i><span>Itinerary</span></a>
+      <a href="budget.html" class="mobile-nav-item"><i class="fas fa-wallet"></i><span>Budget</span></a>
+      
+    </nav>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="script.js"></script>
+</body>
+
+</html>

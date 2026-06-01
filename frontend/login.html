@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Traveloop</title>
+  <meta name="description" content="Access your Traveloop travel planning dashboard.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="auth-wrapper">
+  <button id="dark-mode-toggle" class="dark-mode-toggle">
+    <i class="fas fa-moon"></i>
+  </button>
+  <div class="auth-card">
+    <div class="auth-header">
+      <h2>Welcome Back</h2>
+      <p>Sign in to continue your travel plans</p>
+    </div>
+    <form id="login-form" novalidate>
+      <div class="form-group">
+        <label for="email" class="form-label">Email Address</label>
+        <div class="input-wrapper">
+          <i class="fas fa-envelope input-icon"></i>
+          <input type="email" id="email" class="form-input" placeholder=" " required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <div class="input-wrapper">
+          <i class="fas fa-lock input-icon"></i>
+          <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+          <button type="button" id="toggle-password" class="password-toggle">
+            <i class="fas fa-eye-slash"></i>
+          </button>
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="checkbox-container">
+          <input type="checkbox" id="remember-me">
+          <span class="checkmark"></span>
+          Remember me
+        </label>
+        <a href="#" id="link-forgot-password" class="form-link"
+          onclick="showToast('Password reset link sent (Simulated)', 'info'); return false;">Forgot Password?</a>
+      </div>
+      <button type="submit" id="btn-login-submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i>
+        Login</button>
+    </form>
+    <div class="auth-footer">
+      New to Traveloop? <a href="signup.html" id="link-signup" class="form-link">Create an account</a>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="script.js"></script>
+</body>
+
+</html>

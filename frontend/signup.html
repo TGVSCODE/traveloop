@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - Traveloop</title>
+  <meta name="description" content="Create your Traveloop account to start planning your next travel itinerary.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h2>Create Account</h2>
+      <p>Embark on your smart planning adventure</p>
+    </div>
+    <form id="signup-form" novalidate>
+      <div class="form-group">
+        <label for="fullname" class="form-label">Full Name</label>
+        <div class="input-wrapper">
+          <i class="fas fa-user input-icon"></i>
+          <input type="text" id="fullname" class="form-input" placeholder="John Doe" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email" class="form-label">Email Address</label>
+        <div class="input-wrapper">
+          <i class="fas fa-envelope input-icon"></i>
+          <input type="email" id="email" class="form-input" placeholder="john@example.com" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <div class="input-wrapper">
+          <i class="fas fa-lock input-icon"></i>
+          <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+          <button type="button" id="toggle-password" class="password-toggle">
+            <i class="fas fa-eye-slash"></i>
+          </button>
+        </div>
+        <!-- Password Rules Hint Box -->
+        <div class="password-rules-box" style="margin-top: 1rem; margin-bottom: 1rem;">
+          <ul class="password-rules-list">
+            <li class="password-rule-item" id="rule-min-char"><i class="fas fa-times-circle"></i> Minimum 8 characters</li>
+            <li class="password-rule-item" id="rule-uppercase"><i class="fas fa-times-circle"></i> At least 1 uppercase letter</li>
+            <li class="password-rule-item" id="rule-number"><i class="fas fa-times-circle"></i> At least 1 number</li>
+            <li class="password-rule-item" id="rule-special"><i class="fas fa-times-circle"></i> At least 1 special character</li>
+          </ul>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="confirm-password" class="form-label">Confirm Password</label>
+        <div class="input-wrapper">
+          <i class="fas fa-shield-alt input-icon"></i>
+          <input type="password" id="confirm-password" class="form-input" placeholder="••••••••" required>
+          <button type="button" id="toggle-confirm-password" class="password-toggle">
+            <i class="fas fa-eye-slash"></i>
+          </button>
+        </div>
+      </div>
+      <button type="submit" id="btn-signup-submit" class="btn btn-primary"><i class="fas fa-user-plus"></i> Sign Up</button>
+    </form>
+    <div class="auth-footer">
+      Already have an account? <a href="login.html" id="link-login" class="form-link">Login here</a>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="script.js"></script>
+</body>
+</html>

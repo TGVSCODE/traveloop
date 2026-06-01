@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shared Itinerary - Traveloop</title>
+  <meta name="description" content="View the shared travel itinerary details and timelines on Traveloop.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body style="min-height: 100vh; display: flex; flex-direction: column;">
+  <!-- Shared Header Top Bar -->
+  <header style="background: var(--bg-secondary); border-bottom: 1px solid var(--glass-border); padding: 1rem 2rem; display:flex; justify-content:space-between; align-items:center;">
+    <a href="index.html" class="logo-wrapper" style="margin-bottom:0; font-size:1.5rem; gap:0.5rem;">
+      <i class="fas fa-compass logo-icon" style="font-size:1.3rem;"></i>
+      <span>Traveloop</span>
+    </a>
+    <a href="signup.html" class="btn btn-primary" style="width:auto; padding: 0.5rem 1rem; font-size:0.85rem;"><i class="fas fa-user-plus"></i> Join Traveloop</a>
+  </header>
+
+  <!-- Content Panel wrapper -->
+  <main style="flex:1; width:100%; max-width: 1000px; margin: 0 auto; padding: 2.5rem 1.5rem;">
+    <!-- Container to copy and share -->
+    <div class="card" style="margin-bottom: 2rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; border-color: rgba(233,69,96,0.35);">
+      <div>
+        <h4 style="margin-bottom:0.25rem;"><i class="fas fa-link"></i> Share this Itinerary</h4>
+        <p style="color:var(--text-secondary); font-size:0.85rem;">Copy and share this read-only travel planner with co-travelers or family.</p>
+      </div>
+      <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+        <button id="copy-share-link" class="btn btn-primary" style="width:auto; padding: 0.5rem 1rem; font-size:0.85rem;"><i class="fas fa-copy"></i> Copy Link</button>
+        <a href="#" id="share-tw" class="btn btn-secondary" style="width:auto; padding: 0.5rem 1rem; font-size:0.85rem;"><i class="fab fa-twitter"></i> Tweet</a>
+        <a href="#" id="share-wa" class="btn btn-secondary" style="width:auto; padding: 0.5rem 1rem; font-size:0.85rem;"><i class="fab fa-whatsapp"></i> Send</a>
+      </div>
+    </div>
+
+    <!-- Render details dynamically -->
+    <div id="shared-trip-details">
+      <!-- Loaded dynamically by script.js -->
+    </div>
+  </main>
+
+  <!-- Footer Info -->
+  <footer style="text-align:center; padding: 2rem; border-top:1px solid var(--glass-border); font-size:0.85rem; color:var(--text-secondary);">
+    © 2026 Traveloop. Crafted for smart itinerary building.
+  </footer>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="script.js"></script>
+</body>
+</html>

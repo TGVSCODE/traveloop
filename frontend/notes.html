@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Journal & Notes - Traveloop</title>
+  <meta name="description" content="Capture thoughts, hotels, schedules, and memories on Traveloop.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand">
+          <i class="fas fa-compass logo-icon"></i>
+          <span>Traveloop</span>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="sidebar-item"><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+        <li class="sidebar-item"><a href="trips.html"><i class="fas fa-map-marked-alt"></i> My Trips</a></li>
+        <li class="sidebar-item"><a href="create-trip.html"><i class="fas fa-calendar-plus"></i> Plan New Trip</a></li>
+        <li class="sidebar-item"><a href="itinerary.html"><i class="fas fa-route"></i> Itinerary Builder</a></li>
+        <li class="sidebar-item"><a href="activities.html"><i class="fas fa-hiking"></i> Find Activities</a></li>
+        <li class="sidebar-item"><a href="weather.html"><i class="fas fa-cloud-sun"></i> Weather Advisory</a></li>
+        <li class="sidebar-item"><a href="budget.html"><i class="fas fa-wallet"></i> Budget Tracker</a></li>
+        <li class="sidebar-item"><a href="checklist.html"><i class="fas fa-tasks"></i> Packing List</a></li>
+        <li class="sidebar-item active"><a href="notes.html"><i class="far fa-edit"></i> Travel Journal</a></li>
+        
+        <li class="sidebar-item"><a href="admin.html"><i class="fas fa-user-shield"></i> Admin Panel</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-snippet">
+          <!-- Populated by script.js -->
+        </div>
+        <button class="btn btn-secondary btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <div class="page-title">
+          <h1>Travel Journal</h1>
+          <p>Jot down diary memories, flight booking references, and restaurant addresses.</p>
+        </div>
+        <div style="display:flex; gap:0.5rem; align-items:center;">
+          <button class="sidebar-toggle-btn"><i class="fas fa-bars"></i></button>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <!-- Add Note form -->
+        <div class="span-4 card" style="height:fit-content;">
+          <h3 style="margin-bottom:1.5rem;"><i class="fas fa-feather-pointed"></i> Write Note</h3>
+          <form id="add-note-form" novalidate>
+            <div class="form-group">
+              <label for="note-trip" class="form-label">Associate Trip *</label>
+              <div class="input-wrapper">
+                <i class="fas fa-plane-departure input-icon"></i>
+                <select id="note-trip" class="form-input" style="padding-left:2.75rem;"></select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="note-title" class="form-label">Note Title *</label>
+              <div class="input-wrapper">
+                <i class="far fa-sticky-note input-icon"></i>
+                <input type="text" id="note-title" class="form-input" placeholder="e.g. Flight reference numbers"
+                  required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="note-content" class="form-label">Note Content *</label>
+              <textarea id="note-content" class="form-input" style="height: 150px; padding: 1rem; resize:none;"
+                placeholder="Write address coordinates, packing notes, flight links..." required></textarea>
+            </div>
+
+            <button type="submit" id="btn-save-note" class="btn btn-primary" style="margin-top:0.5rem;"><i
+                class="fas fa-save"></i> Save Note</button>
+          </form>
+        </div>
+
+        <!-- Render notes grid -->
+        <div class="span-8 card">
+          <h3><i class="far fa-comments"></i> Saved Journal Entries</h3>
+          <div class="dashboard-grid" id="notes-grid" style="margin-top: 1.5rem;">
+            <!-- Rendered by script.js -->
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Edit Note Modal -->
+    <div class="modal" id="edit-note-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Edit Journal Entry</h3>
+          <button class="modal-close"><i class="fas fa-times"></i></button>
+        </div>
+        <form id="edit-note-form">
+          <div class="modal-body" style="display:flex; flex-direction:column; gap:1rem;">
+            <div class="form-group">
+              <label for="edit-note-title" class="form-label">Note Title</label>
+              <input type="text" id="edit-note-title" class="form-input" style="padding-left:1rem;" required>
+            </div>
+            <div class="form-group">
+              <label for="edit-note-content" class="form-label">Note Content</label>
+              <textarea id="edit-note-content" class="form-input" style="height:150px; padding:1rem; resize:none;"
+                required></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary modal-cancel" style="width:auto;">Cancel</button>
+            <button type="submit" id="btn-edit-note-save" class="btn btn-primary" style="width:auto;">Update
+              Note</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-nav">
+      <a href="dashboard.html" class="mobile-nav-item"><i class="fas fa-chart-line"></i><span>Home</span></a>
+      <a href="trips.html" class="mobile-nav-item"><i class="fas fa-map-marked-alt"></i><span>Trips</span></a>
+      <a href="itinerary.html" class="mobile-nav-item"><i class="fas fa-route"></i><span>Itinerary</span></a>
+      <a href="budget.html" class="mobile-nav-item"><i class="fas fa-wallet"></i><span>Budget</span></a>
+      
+    </nav>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="script.js"></script>
+</body>
+
+</html>

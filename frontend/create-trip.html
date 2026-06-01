@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan New Trip - Traveloop</title>
+  <meta name="description" content="Configure and create a new travel plan on Traveloop.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand">
+          <i class="fas fa-compass logo-icon"></i>
+          <span>Traveloop</span>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="sidebar-item"><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+        <li class="sidebar-item"><a href="trips.html"><i class="fas fa-map-marked-alt"></i> My Trips</a></li>
+        <li class="sidebar-item active"><a href="create-trip.html"><i class="fas fa-calendar-plus"></i> Plan New
+            Trip</a></li>
+        <li class="sidebar-item"><a href="itinerary.html"><i class="fas fa-route"></i> Itinerary Builder</a></li>
+        <li class="sidebar-item"><a href="activities.html"><i class="fas fa-hiking"></i> Find Activities</a></li>
+        <li class="sidebar-item"><a href="weather.html"><i class="fas fa-cloud-sun"></i> Weather Advisory</a></li>
+        <li class="sidebar-item"><a href="budget.html"><i class="fas fa-wallet"></i> Budget Tracker</a></li>
+        <li class="sidebar-item"><a href="checklist.html"><i class="fas fa-tasks"></i> Packing List</a></li>
+        <li class="sidebar-item"><a href="notes.html"><i class="far fa-edit"></i> Travel Journal</a></li>
+        
+        <li class="sidebar-item"><a href="admin.html"><i class="fas fa-user-shield"></i> Admin Panel</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-snippet">
+          <!-- Populated by script.js -->
+        </div>
+        <button class="btn btn-secondary btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <div class="page-title">
+          <h1>Plan New Trip</h1>
+          <p>Provide details to map out your upcoming travel destination.</p>
+        </div>
+        <div style="display:flex; gap:0.5rem; align-items:center;">
+          <button class="sidebar-toggle-btn"><i class="fas fa-bars"></i></button>
+          <a href="trips.html" id="btn-back-trips" class="btn btn-secondary" style="width: auto;"><i
+              class="fas fa-arrow-left"></i> My Trips</a>
+        </div>
+      </div>
+
+      <div class="trip-planning-container">
+        <!-- Left Column: Trip Details Form -->
+        <div class="card" style="margin: 0; width: 100%;">
+          <form id="create-trip-form" novalidate>
+            <div class="dashboard-grid">
+              <div class="span-12 form-group">
+                <label for="trip-name" class="form-label">Trip Name *</label>
+                <div class="input-wrapper">
+                  <i class="fas fa-suitcase input-icon"></i>
+                  <input type="text" id="trip-name" class="form-input" placeholder="e.g. Summer Vacation in Bali"
+                    required>
+                </div>
+              </div>
+
+              <div class="span-12 form-group">
+                <label for="destination" class="form-label">Destination City/Country *</label>
+                <div class="input-wrapper">
+                  <i class="fas fa-map-marker-alt input-icon"></i>
+                  <input type="text" id="destination" class="form-input" placeholder="e.g. Bali, Indonesia" required>
+                </div>
+              </div>
+
+              <div class="span-6 form-group">
+                <label for="start-date" class="form-label">Start Date *</label>
+                <div class="input-wrapper">
+                  <i class="fas fa-calendar-alt input-icon"></i>
+                  <input type="date" id="start-date" class="form-input" required>
+                </div>
+              </div>
+
+              <div class="span-6 form-group">
+                <label for="end-date" class="form-label">End Date *</label>
+                <div class="input-wrapper">
+                  <i class="fas fa-calendar-check input-icon"></i>
+                  <input type="date" id="end-date" class="form-input" required>
+                </div>
+              </div>
+
+              <div class="span-6 form-group">
+                <label for="travelers" class="form-label">Number of Travelers</label>
+                <div class="input-wrapper">
+                  <i class="fas fa-users input-icon"></i>
+                  <input type="number" id="travelers" class="form-input" value="1" min="1" required>
+                </div>
+              </div>
+
+              <div class="span-6 form-group">
+                <label for="budget" class="form-label">Budget Amount ($) *</label>
+                <div class="input-wrapper">
+                  <i class="fas fa-dollar-sign input-icon"></i>
+                  <input type="number" id="budget" class="form-input" placeholder="e.g. 2000" min="0" required>
+                </div>
+              </div>
+              
+              <div class="span-12" style="margin-top: 0.5rem; margin-bottom: 0.25rem;">
+                <h4 style="font-size: 0.95rem; color: var(--text-secondary);"><i class="fas fa-ticket-alt"></i> External Bookings (Optional)</h4>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem;">Traveloop tracks sightseeing. Enter the cost of flights/hotels you've already booked elsewhere so they are deducted from your total budget.</p>
+              </div>
+
+              <div class="span-6 form-group">
+                <label for="flight-cost" class="form-label">Flight Tickets ($)</label>
+                <div class="input-wrapper">
+                  <i class="fas fa-plane input-icon"></i>
+                  <input type="number" id="flight-cost" class="form-input" placeholder="e.g. 450" min="0">
+                </div>
+              </div>
+
+              <div class="span-6 form-group">
+                <label for="lodging-cost" class="form-label">Accommodation ($)</label>
+                <div class="input-wrapper">
+                  <i class="fas fa-bed input-icon"></i>
+                  <input type="number" id="lodging-cost" class="form-input" placeholder="e.g. 800" min="0">
+                </div>
+              </div>
+
+              <div class="span-12 form-group">
+                <label for="description" class="form-label">Trip Description</label>
+                <textarea id="description" class="form-input" style="height: 100px; padding-left: 1rem; resize: none;"
+                  placeholder="Provide brief notes, hotel bookmarks, flight codes, etc..."></textarea>
+              </div>
+
+              <div class="span-12" style="margin-top: 1rem;">
+                <button type="submit" id="btn-create-trip-submit" class="btn btn-primary"><i
+                    class="fas fa-plane-departure"></i> Create Trip</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Right Column: Suggestions Sidebar -->
+        <div class="card suggestions-panel" id="suggestions-panel">
+          <div class="suggestions-header">
+            <h3><i class="fas fa-wand-magic-sparkles" style="color: var(--accent);"></i> Travel Planner Suggestions</h3>
+            <p>Type a destination city and budget to unlock real-time recommendations.</p>
+          </div>
+          <hr style="border: 0; border-top: 1px solid var(--border-light); margin: 0.75rem 0;">
+          <div id="suggestions-content">
+            <!-- Initial Empty State -->
+            <div class="suggestions-empty-state">
+              <i class="fas fa-map-location-dot suggestions-empty-icon"></i>
+              <p>Type a city in "Destination" above (e.g. Paris, Tokyo) to view popular activities & places.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-nav">
+      <a href="dashboard.html" class="mobile-nav-item"><i class="fas fa-chart-line"></i><span>Home</span></a>
+      <a href="trips.html" class="mobile-nav-item"><i class="fas fa-map-marked-alt"></i><span>Trips</span></a>
+      <a href="itinerary.html" class="mobile-nav-item"><i class="fas fa-route"></i><span>Itinerary</span></a>
+      <a href="budget.html" class="mobile-nav-item"><i class="fas fa-wallet"></i><span>Budget</span></a>
+      
+    </nav>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+  <script src="script.js"></script>
+</body>
+
+</html>
