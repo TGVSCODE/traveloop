@@ -246,7 +246,7 @@ router.get('/', auth, async (req, res) => {
   try {
     // 1. Fetch all trips for user
     const [trips] = await db.query(
-      'SELECT id, name, destination, DATE_FORMAT(startDate, "%Y-%m-%d") as startDate, DATE_FORMAT(endDate, "%Y-%m-%d") as endDate, travelers, budget, description FROM trips WHERE user_id = ?',
+      `SELECT id, name, destination, DATE_FORMAT(startDate, '%Y-%m-%d') as startDate, DATE_FORMAT(endDate, '%Y-%m-%d') as endDate, travelers, budget, description FROM trips WHERE user_id = ?`,
       [req.user.id]
     );
 
@@ -259,13 +259,13 @@ router.get('/', auth, async (req, res) => {
       trips.map(async (trip) => {
         // Fetch itineraries (stops)
         const [itinerary] = await db.query(
-          'SELECT city, DATE_FORMAT(date, "%Y-%m-%d") as date, activity, category, cost, duration, start_time FROM itineraries WHERE trip_id = ? ORDER BY sort_order ASC, date ASC',
+          `SELECT city, DATE_FORMAT(date, '%Y-%m-%d') as date, activity, category, cost, duration, start_time FROM itineraries WHERE trip_id = ? ORDER BY sort_order ASC, date ASC`,
           [trip.id]
         );
 
         // Fetch expenses
         const [expenses] = await db.query(
-          'SELECT description, amount, category, DATE_FORMAT(date, "%Y-%m-%d") as date, status FROM expenses WHERE trip_id = ?',
+          `SELECT description, amount, category, DATE_FORMAT(date, '%Y-%m-%d') as date, status FROM expenses WHERE trip_id = ?`,
           [trip.id]
         );
 
