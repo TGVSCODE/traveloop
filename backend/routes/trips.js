@@ -417,7 +417,7 @@ router.delete('/:id', auth, async (req, res) => {
 router.put('/:id/sync', auth, async (req, res) => {
   const { itinerary, expenses, checklist, notes } = req.body;
 
-  const pool = db.getPool();
+  const pool = await db.getPool();
   const conn = await pool.getConnection();
 
   try {
